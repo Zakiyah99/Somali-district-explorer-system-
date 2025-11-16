@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeStorage();
   setupNavigation();
   setupModals();
+  setupBurgerMenu();
   setupEventListeners();
   loadRegionsTable();
   loadDistrictsTable();
@@ -60,6 +61,71 @@ function updatePageTitle(section) {
     'users': 'Users Management'
   };
   document.getElementById('pageTitle').textContent = titles[section] || 'Dashboard';
+}
+
+// Sidebar / burger menu behavior for small screens
+function setupBurgerMenu() {
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.querySelector('.sidebar');
+
+  if (!menuToggle || !sidebar) return;
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    menuToggle.setAttribute('aria-expanded', 'true');
+    showOverlay();
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    hideOverlay();
+  }
+
+  menuToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (sidebar.classList.contains('open')) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  });
+
+  // close when a nav link is clicked (on small screens)
+  document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth <= 1024) closeSidebar();
+    });
+  });
+
+  // overlay management
+  function showOverlay() {
+    let overlay = document.getElementById('sidebarOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'sidebarOverlay';
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', closeSidebar);
+    }
+    setTimeout(() => overlay.classList.add('show'), 10);
+  }
+
+  function hideOverlay() {
+    const overlay = document.getElementById('sidebarOverlay');
+    if (overlay) {
+      overlay.classList.remove('show');
+      setTimeout(() => {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      }, 200);
+    }
+  }
+
+  // close on escape
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+      closeSidebar();
+    }
+  });
 }
 
 
