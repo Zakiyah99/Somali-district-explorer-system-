@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard - District Management System</title>
+  <link rel="stylesheet" href="../../styles/dashboard.css">
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Admin Panel</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" data-section="regions">
+              <span class="nav-icon">🗺️</span>
+              <span class="nav-text">Regions</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="districts">
+              <span class="nav-icon">📍</span>
+              <span class="nav-text">Districts</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="users">
+              <span class="nav-icon">👥</span>
+              <span class="nav-text">Users</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info-sidebar">
+          <span id="userInfoSidebar">Admin User</span>
+        </div>
+        <button id="logoutBtn" class="logout-button-sidebar">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="content-header">
+        <h1 id="pageTitle">Regions Management</h1>
+        <div class="header-actions">
+          <button id="addNewBtn" class="add-button">
+            <span>+</span> Add New
+          </button>
+        </div>
+      </header>
+
+      <!-- Regions Section -->
+      <section id="regionsSection" class="content-section active">
+        <div class="section-header">
+          <h2>All Regions</h2>
+          <p>Manage regions and their districts</p>
+        </div>
+        <div class="table-container">
+          <table id="regionsTable" class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Region Name</th>
+                <th>Districts Count</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Districts Section -->
+      <section id="districtsSection" class="content-section">
+        <div class="section-header">
+          <div class="section-header-content">
+            <div>
+              <h2>All Districts</h2>
+              <p>Manage districts, details, maps, and images</p>
+            </div>
+            <button id="addDetailsBtn" class="add-details-button" type="button">
+              <span>📝</span> Add Details
+            </button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table id="districtsTable" class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Region</th>
+                <th>District Name</th>
+                <th>Has Details</th>
+                <th>Has Map</th>
+                <th>Images</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Users Section -->
+      <section id="usersSection" class="content-section">
+        <div class="section-header">
+          <h2>All Users</h2>
+          <p>Manage user accounts and access</p>
+        </div>
+        <div class="table-container">
+          <table id="usersTable" class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add Region Modal -->
+  <div id="addRegionModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Region</h3>
+        <button class="modal-close" data-modal="addRegionModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="newRegionName">Region Name</label>
+          <input type="text" id="newRegionName" placeholder="Enter region name" class="form-input" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmAddRegion" class="btn btn-primary">Add Region</button>
+        <button class="btn btn-secondary" data-modal="addRegionModal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add District Modal -->
+  <div id="addDistrictModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New District</h3>
+        <button class="modal-close" data-modal="addDistrictModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="newDistrictRegion">Region</label>
+          <select id="newDistrictRegion" class="form-input" required>
+            <option value="">-- Select Region --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newDistrictName">District Name</label>
+          <input type="text" id="newDistrictName" placeholder="Enter district name" class="form-input" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmAddDistrict" class="btn btn-primary">Add District</button>
+        <button class="btn btn-secondary" data-modal="addDistrictModal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div id="addUserModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New User</h3>
+        <button class="modal-close" data-modal="addUserModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="newUserName">Full Name</label>
+          <input type="text" id="newUserName" placeholder="Enter full name" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="newUserEmail">Email</label>
+          <input type="email" id="newUserEmail" placeholder="Enter email address" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label for="newUserPassword">Password</label>
+          <input type="password" id="newUserPassword" placeholder="Enter password" class="form-input" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="confirmAddUser" class="btn btn-primary">Add User</button>
+        <button class="btn btn-secondary" data-modal="addUserModal">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Details Modal -->
+  <div id="addDetailsModal" class="modal">
+    <div class="modal-content large-modal">
+      <div class="modal-header">
+        <h3>Add District Information</h3>
+        <button class="modal-close" data-modal="addDetailsModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Progress Steps -->
+        <div class="steps-indicator">
+          <div class="step-item active" data-step="1">
+            <div class="step-number">1</div>
+            <div class="step-label">Details</div>
+          </div>
+          <div class="step-item" data-step="2">
+            <div class="step-number">2</div>
+            <div class="step-label">Map Script</div>
+          </div>
+          <div class="step-item" data-step="3">
+            <div class="step-number">3</div>
+            <div class="step-label">Images</div>
+          </div>
+        </div>
+
+        <!-- Step 1: District & Region Selection -->
+        <div class="form-step active" id="step1">
+          <h4 class="step-title">Select District</h4>
+          <div class="form-group">
+            <label for="detailsRegionSelect">Region</label>
+            <select id="detailsRegionSelect" class="form-input" required>
+              <option value="">-- Select Region --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="detailsDistrictSelect">District</label>
+            <select id="detailsDistrictSelect" class="form-input" required disabled>
+              <option value="">-- Select District --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Step 2: District Details -->
+        <div class="form-step" id="step2">
+          <h4 class="step-title">District Information</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="detailGovernorName">Governor Name</label>
+              <input type="text" id="detailGovernorName" class="form-input" placeholder="Enter governor name">
+            </div>
+            <div class="form-group">
+              <label for="detailFamousCulture">Famous Culture</label>
+              <input type="text" id="detailFamousCulture" class="form-input" placeholder="Enter famous culture/traditions">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="detailPopulation">Population</label>
+              <input type="text" id="detailPopulation" class="form-input" placeholder="Enter population">
+            </div>
+            <div class="form-group">
+              <label for="detailArea">Area (km²)</label>
+              <input type="text" id="detailArea" class="form-input" placeholder="Enter area in square kilometers">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="detailDescription">Description</label>
+            <textarea id="detailDescription" class="form-textarea" rows="4" placeholder="Enter district description, history, landmarks, and other relevant information..."></textarea>
+            <div class="char-counter">
+              <span id="detailCharCount">0</span> characters
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Map Iframe -->
+        <div class="form-step" id="step3">
+          <h4 class="step-title">Location Map</h4>
+          <div class="form-group">
+            <label for="detailMapIframe">Google Maps Iframe Code</label>
+            <p class="help-text">Paste the Google Maps embed iframe code here. You can get this from Google Maps by clicking "Share" → "Embed a map" → Copy the iframe code.</p>
+            <textarea id="detailMapIframe" class="form-textarea code-textarea" rows="6" placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'></textarea>
+          </div>
+          <div class="map-preview-small">
+            <h5>Map Preview</h5>
+            <div id="detailMapPreview" class="map-display-small"></div>
+          </div>
+        </div>
+
+        <!-- Step 4: Images -->
+        <div class="form-step" id="step4">
+          <h4 class="step-title">District Images</h4>
+          <div class="form-group">
+            <label>Upload Images</label>
+            <input type="file" id="detailImageUpload" accept="image/*" multiple style="display: none;">
+            <button type="button" id="detailUploadBtn" class="btn btn-secondary">Choose Images</button>
+            <p class="help-text">You can upload multiple images. Click on an image to remove it.</p>
+          </div>
+          <div id="detailImagesGallery" class="images-gallery">
+            <p class="empty-message">No images uploaded yet</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="step-buttons">
+          <button type="button" id="prevStepBtn" class="btn btn-secondary" style="display: none;">
+            <span>←</span> Previous
+          </button>
+          <button type="button" id="nextStepBtn" class="btn btn-primary">
+            Next <span>→</span>
+          </button>
+          <button type="button" id="saveAllDetailsBtn" class="btn btn-primary" style="display: none;">
+            <span>💾</span> Save All
+          </button>
+          <button type="button" class="btn btn-secondary" data-modal="addDetailsModal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit District Modal -->
+  <div id="editDistrictModal" class="modal">
+    <div class="modal-content large-modal">
+      <div class="modal-header">
+        <h3>Edit District</h3>
+        <button class="modal-close" data-modal="editDistrictModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tabs-container">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="details">Details</button>
+            <button class="tab-btn" data-tab="map">Map Script</button>
+            <button class="tab-btn" data-tab="images">Images</button>
+          </div>
+          
+          <div class="tab-content active" id="editDetailsTab">
+            <div class="form-group">
+              <label>District Details</label>
+              <textarea id="editDistrictDetails" class="form-textarea details-textarea" rows="10" placeholder="Enter district details..."></textarea>
+              <div class="char-counter">
+                <span id="editCharCount">0</span> characters
+              </div>
+            </div>
+            <button id="saveDetailsBtn" class="btn btn-primary">Save Details</button>
+          </div>
+
+          <div class="tab-content" id="editMapTab">
+            <div class="form-group">
+              <label>Google Maps Iframe Code</label>
+              <p class="help-text">Paste the Google Maps embed iframe code here. You can get this from Google Maps by clicking "Share" → "Embed a map" → Copy the iframe code.</p>
+              <textarea id="editMapScript" class="form-textarea code-textarea" rows="8" placeholder='<iframe src="https://www.google.com/maps/embed?pb=..." width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'></textarea>
+            </div>
+            <div class="map-preview-edit">
+              <h5>Map Preview</h5>
+              <div id="editMapPreview" class="map-display-small"></div>
+            </div>
+            <button id="saveMapScriptBtn" class="btn btn-primary">Save Map</button>
+          </div>
+
+          <div class="tab-content" id="editImagesTab">
+            <div class="form-group">
+              <label>Upload Images</label>
+              <input type="file" id="editImageUpload" accept="image/*" multiple style="display: none;">
+              <button id="uploadImageBtn" class="btn btn-secondary">Choose Images</button>
+            </div>
+            <div id="editImagesGallery" class="images-gallery">
+              <p class="empty-message">No images uploaded</p>
+            </div>
+          </div>
+        </div>
+        <div class="map-preview">
+          <h4>Map Preview</h4>
+          <div id="districtMap" class="map-display"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/storage.js"></script>
+  <script src="../../scripts/auth.js"></script>
+  <script src="../../scripts/dashboard.js"></script>
+</body>
+</html>

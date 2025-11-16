@@ -1,0 +1,22 @@
+{
+  "Mogadishu": {
+    "districts": {
+      "Daynile": {
+        "details": "Daynile is one of the districts of Mogadishu, the capital city of Somalia. It is located in the northern part of the city.",
+        "mapScript": "",
+        "images": []
+      },
+      "Hodan": {
+        "details": "Hodan is a district in Mogadishu known for its commercial activities and residential areas.",
+        "mapScript": "",
+        "images": []
+      },
+      "Waberi": {
+        "details": "Waberi is a district in Mogadishu with significant historical and cultural importance.",
+        "mapScript": "",
+        "images": []
+      }
+    }
+  }
+}
+

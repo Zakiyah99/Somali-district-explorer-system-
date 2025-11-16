@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - District Management System</title>
+  <link rel="stylesheet" href="../../styles/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>District Management System</h1>
+        <p>Sign in to continue</p>
+      </div>
+      
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="Enter your email" 
+            required  
+            autocomplete="email"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Enter your password" 
+            required 
+            autocomplete="current-password"
+          />
+        </div>
+        
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        
+        <button type="submit" class="login-button">
+          <span>Sign In</span>
+        </button>
+      </form>
+      
+      <div class="login-footer">
+        <p>Default credentials: omartood@gmail.com / omar123</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/storage.js"></script>
+  <script src="../../scripts/auth.js"></script>
+  <script>
+    // Initialize storage
+    initializeStorage();
+
+    // Handle login form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMessage');
+      
+      // Clear previous error
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = '';
+      
+      // Attempt login
+      const result = login(email, password);
+      
+      if (result.success) {
+        // Redirect to dashboard
+        window.location.href = '../dashboard/dashboard.html';
+      } else {
+        // Show error message
+        errorMessage.textContent = result.message;
+        errorMessage.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
